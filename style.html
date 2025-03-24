@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mDowód</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <header>
+        <h1>mDowód</h1>
+    </header>
+
+    <main>
+        <label for="photoUpload">Dodaj zdjęcie:</label>
+        <input type="file" id="photoUpload" accept="image/*">
+        <img id="profilePhoto" src="" alt="Twoje zdjęcie">
+
+        <label for="fullName">Imię i nazwisko:</label>
+        <input type="text" id="fullName" placeholder="Wpisz swoje dane">
+
+        <button id="save">Zapisz</button>
+    </main>
+
+    <script>
+        document.getElementById('photoUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePhoto').src = e.target.result;
+                    localStorage.setItem('photo', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('save').addEventListener('click', function() {
+            const name = document.getElementById('fullName').value;
+            localStorage.setItem('name', name);
+        });
+
+        window.onload = function() {
+            document.getElementById('profilePhoto').src = localStorage.getItem('photo') || "";
+            document.getElementById('fullName').value = localStorage.getItem('name') || "";
+        };
+    </script>
+
+</body>
+</html>
